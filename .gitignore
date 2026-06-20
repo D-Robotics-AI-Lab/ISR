@@ -1,0 +1,12 @@
+# Existing local environment
+.venv/
+
+# Existing package metadata
+/src/isr.egg-info/
+
+# Existing macOS system files
+.DS_Store
+
+# Existing project data and generated outputs
+/datasets/
+/outputs/
