@@ -15,13 +15,13 @@
 
 <p align="center">
   <a href="https://d-robotics-ai-lab.github.io/isr.page/" target="_blank">
-    <img src="https://img.shields.io/badge/Project%20Page-ISR-555555?style=flat" alt="Project Page">
+    <img src="https://img.shields.io/badge/Project%20Page-ISR-6b7280?style=flat&labelColor=555555" alt="Project Page">
   </a>
   <a href="https://arxiv.org/pdf/2606.22907" target="_blank">
-    <img src="https://img.shields.io/badge/Paper-PDF-64748b?style=flat" alt="Paper PDF">
+    <img src="https://img.shields.io/badge/Paper-PDF-64748b?style=flat&labelColor=555555" alt="Paper PDF">
   </a>
   <a href="https://arxiv.org/abs/2606.22907" target="_blank">
-    <img src="https://img.shields.io/badge/Paper-arXiv-b31b1b?style=flat" alt="Paper arXiv">
+    <img src="https://img.shields.io/badge/Paper-arXiv-b31b1b?style=flat&labelColor=555555" alt="Paper arXiv">
   </a>
 </p>
 
