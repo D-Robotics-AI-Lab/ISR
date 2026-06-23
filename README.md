@@ -14,11 +14,14 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/D-Robotics-AI-Lab/ISR/blob/main/pdfs/root.pdf" target="_blank">
-    <img src="https://img.shields.io/badge/PDF-Paper-cb2d3e?style=flat-square" alt="Paper PDF">
-  </a>
   <a href="https://d-robotics-ai-lab.github.io/isr.page/" target="_blank">
-    <img src="https://img.shields.io/badge/Project%20Page-ISR-d65f21?style=flat-square" alt="Project Page">
+    <img src="https://img.shields.io/badge/Project%20Page-ISR-555555?style=flat" alt="Project Page">
+  </a>
+  <a href="https://arxiv.org/pdf/2606.22907" target="_blank">
+    <img src="https://img.shields.io/badge/PDF-2606.22907-555555?style=flat" alt="PDF">
+  </a>
+  <a href="https://arxiv.org/abs/2606.22907" target="_blank">
+    <img src="https://img.shields.io/badge/arXiv-2606.22907-b31b1b?style=flat" alt="arXiv">
   </a>
 </p>
 
@@ -134,3 +137,19 @@ their open-source contributions.
 ## License
 
 This project is released under the [Apache License 2.0](LICENSE).
+
+## 📝 Citation
+
+If you use this code in your research, please cite our project:
+
+```bibtex
+@article{yang2026isr,
+  title={Improving Robotic Imitation Learning via Trajectory Standardization},
+  author={Licheng Yang and Lingfeng Qian and Fei Zheng and Yonghao He and Wei Sui and Shuangshuang Li and Hu Su},
+  year={2026},
+  eprint={2606.22907},
+  archivePrefix={arXiv},
+  primaryClass={cs.RO},
+  url={https://arxiv.org/abs/2606.22907}
+}
+```
