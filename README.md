@@ -17,9 +17,6 @@
   <a href="https://d-robotics-ai-lab.github.io/isr.page/" target="_blank">
     <img src="https://img.shields.io/badge/Project%20Page-ISR-555555?style=flat" alt="Project Page">
   </a>
-  <a href="https://github.com/D-Robotics-AI-Lab/DRRM" target="_blank">
-    <img src="https://img.shields.io/badge/DRRM-Repo-d65f21?style=flat" alt="DRRM">
-  </a>
   <a href="https://arxiv.org/pdf/2606.22907" target="_blank">
     <img src="https://img.shields.io/badge/Paper-PDF-64748b?style=flat" alt="Paper PDF">
   </a>
