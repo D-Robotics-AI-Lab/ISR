@@ -18,7 +18,7 @@
     <img src="https://img.shields.io/badge/Project%20Page-ISR-d65f21?style=flat&labelColor=555555" alt="Project Page">
   </a>
   <a href="https://arxiv.org/pdf/2606.22907" target="_blank">
-    <img src="https://img.shields.io/badge/Paper-PDF-2563eb?style=flat&labelColor=555555" alt="Paper PDF">
+    <img src="https://img.shields.io/badge/Paper-PDF-eab308?style=flat&labelColor=555555" alt="Paper PDF">
   </a>
   <a href="https://arxiv.org/abs/2606.22907" target="_blank">
     <img src="https://img.shields.io/badge/Paper-arXiv-b31b1b?style=flat&labelColor=555555" alt="Paper arXiv">
