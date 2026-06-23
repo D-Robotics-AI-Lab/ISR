@@ -1,12 +1,17 @@
-# Existing local environment
+# Python caches
+__pycache__/
+src/isr.egg-info/
+
+# Virtual environment
 .venv/
 
-# Existing package metadata
-/src/isr.egg-info/
+# Testing and linting
+.pytest_cache/
+.ruff_cache/
 
-# Existing macOS system files
+# OS system files
 .DS_Store
 
-# Existing project data and generated outputs
+# Datasets and outputs
 /datasets/
 /outputs/

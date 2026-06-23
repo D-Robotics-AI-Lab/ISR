@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import logging
+
 import numpy as np
+
+logger = logging.getLogger(__name__)
 
 
 def find_forced_gripper_sample_indices(
     *,
-    positions: np.ndarray,
     num_frames: int,
     gripper: np.ndarray | None,
     threshold: float = 0.05,
@@ -24,13 +27,7 @@ def find_forced_gripper_sample_indices(
                     gripper_forced_indices.append(i + 1)
             gripper_forced_indices = sorted(set(gripper_forced_indices))
             if gripper_forced_indices:
-                print(f"Gripper-forced sample indices (|delta| > {threshold}): {gripper_forced_indices}")
-        return gripper_forced_indices
-
-    if positions.ndim == 2 and positions.shape[1] > 3:
-        for i in range(num_frames - 1):
-            if positions[i, -1] != positions[i + 1, -1]:
-                gripper_forced_indices.append(i)
+                logger.info(f"Gripper-forced sample indices (|delta| > {threshold}): {gripper_forced_indices}")
     return gripper_forced_indices
 
 

@@ -39,29 +39,34 @@ Information-Standardized Trajectory Resampling (ISR) is an offline preprocessing
 
 ## 2. Installation
 
+**Option A — pip (venv)**
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -e .
+pip install --upgrade pip
+pip install -e .
 ```
+
+**Option B — conda**
+
+```bash
+conda env create -f environment.yml
+conda activate isr
+```
+
+Both options register three command-line tools after installation:
+`isr-resample`, `isr-batch`, and `isr-visualize`.
 
 ## 3. Getting Started
 
-### 3.1 Resample a single episode:
+### 3.1 Resample a single episode
 
-The example script assumes our episode JSON schema and a preprocessed episode
-where every frame is valid. In `cli/resampling/resample_single_episode.py`,
-`load_episode_arrays` extracts the action point/end-effector 3D coordinates,
-timestamps, and an optional gripper value. For another JSON schema, write your
-own extraction function before calling ISR. The extraction function must
-provide `positions` with shape `[T, 3]` and aligned `timestamps` with shape
-`[T]`. The `gripper` array with shape `[T]` is optional. When saving output,
-the example scripts map selected trajectory positions back to the original
-frame numbers using each frame's JSON `idx` field.
+The example below uses our episode JSON schema where every frame is valid.
+`isr-resample` extracts end-effector 3D coordinates, timestamps, and an optional gripper value by calling `load_episode_arrays` in `src/isr/io.py` (the gripper value is optional; if provided, it is used to detect state transitions—like opening or closing—and force the inclusion of those critical manipulation keyframes in the output). If your dataset uses a different JSON schema, you can customize the parsing logic inside `load_episode_arrays` in [src/isr/io.py](src/isr/io.py) to match your format so that the CLI commands still work out-of-the-box.
 
 ```bash
-python3 cli/resampling/resample_single_episode.py \
+isr-resample \
   --data data/example_1.json \
   --output_json outputs/example_1/data.json \
   --d_target 0.05 \
@@ -69,17 +74,20 @@ python3 cli/resampling/resample_single_episode.py \
   --lambda_acc 0.01
 ```
 
-### 3.2 Resample a dataset:
+### 3.2 Resample a dataset (batch)
 
 ```bash
-python3 cli/resampling/batch_resample.py \
+isr-batch \
   --input_dir datasets/task1 \
   --output_dir outputs/task1_isr \
   --d_target 0.05 \
   --lambda_dist 1.0 \
   --lambda_acc 0.01 \
-  --log_path outputs/logs/task1/scale.json
+  --log_path outputs/logs/task1/scale.json \
+  --verbose
 ```
+
+- `--verbose`: (Optional) Enable detailed printouts of the resampling process (such as gripper change points and final selected indices) for each episode. If omitted, the tool outputs a single-line progress summary per episode to keep the terminal output clean.
 
 Dataset directory structure under `datasets/`:
 
@@ -98,12 +106,12 @@ datasets/task1/
 ├── ...
 ```
 
-### 3.3 Visualization:
+### 3.3 Visualize trajectories
 
 Open an interactive window:
 
 ```bash
-python3 cli/visualization/visualize_traj.py \
+isr-visualize \
   --original data/example_1.json \
   --resampled outputs/example_1/data.json
 ```
@@ -111,11 +119,13 @@ python3 cli/visualization/visualize_traj.py \
 Save the visualization as an image:
 
 ```bash
-python3 cli/visualization/visualize_traj.py \
+isr-visualize \
   --original data/example_1.json \
   --resampled outputs/example_1/data.json \
   --save outputs/example_1/traj_compare.png
 ```
+
+
 
 ## 4. VLA/VA Model Fine-tuning
 
@@ -143,10 +153,10 @@ This project is released under the [Apache License 2.0](LICENSE).
 If you use this code in your research, please cite our project:
 
 ```bibtex
-@article{yang2026isr,
+@inproceedings{yang2026isr,
   title={Improving Robotic Imitation Learning via Trajectory Standardization},
   author={Licheng Yang and Lingfeng Qian and Fei Zheng and Yonghao He and Wei Sui and Shuangshuang Li and Hu Su},
-  journal={arXiv preprint arXiv:2606.22907},
+  booktitle={arXiv:2606.22907},
   year={2026}
 }
 ```

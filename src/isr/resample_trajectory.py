@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+import logging
+
 import numpy as np
 
 from .gripper import expand_forced_sample_ranges, find_forced_gripper_sample_indices
 from .kinematics import compute_acceleration_magnitudes_from_positions
+
+logger = logging.getLogger(__name__)
 
 
 def isr_resample_trajectory(
@@ -52,9 +56,8 @@ def isr_resample_trajectory(
     lambda_dist = float(lambda_dist)
     lambda_acc = float(lambda_acc)
 
-    boundary_indices = [0, num_frames - 1]
+
     gripper_forced_indices = find_forced_gripper_sample_indices(
-        positions=positions,
         num_frames=num_frames,
         gripper=gripper,
     )
@@ -65,7 +68,7 @@ def isr_resample_trajectory(
             num_frames=num_frames,
             max_gap=gripper_expand_max_gap,
         )
-        print(f"Expanded gripper-forced sample indices: {gripper_forced_indices}")
+        logger.info(f"Expanded gripper-forced sample indices: {gripper_forced_indices}")
 
     if lambda_acc > 0.0:
         acc_mag = compute_acceleration_magnitudes_from_positions(positions, times=times)
@@ -101,9 +104,9 @@ def isr_resample_trajectory(
         prev[i] = best_prev
 
     resampled_indices = _backtrack_resampled_indices(prev, end_idx=num_frames - 1)
-    resampled_indices = sorted(set(resampled_indices + boundary_indices + gripper_forced_indices))
+    resampled_indices = sorted(set(resampled_indices + gripper_forced_indices))
 
-    print(f"Resampled frame indices: {resampled_indices}")
+    logger.info(f"Resampled frame indices: {resampled_indices}")
     return resampled_indices
 
 

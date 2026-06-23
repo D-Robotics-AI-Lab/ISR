@@ -1,0 +1,84 @@
+"""Resample one episode data.json file with ISR."""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+
+
+from isr import load_episode_arrays
+
+
+def save_selected_json(data: dict, selected_frame_indices: list[int], output_path: Path) -> None:
+    """Write a new data.json containing only the selected frames."""
+    import copy
+    frames_by_idx = {int(frame["idx"]): frame for frame in data["data"]}
+    output_data = {
+        "info": data.get("info", {}),
+        "text": data.get("text", ""),
+        "data": [copy.deepcopy(frames_by_idx[idx]) for idx in selected_frame_indices],
+    }
+    for new_idx, frame in enumerate(output_data["data"]):
+        frame["idx"] = new_idx
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8") as f:
+        json.dump(output_data, f, indent=4, ensure_ascii=False)
+
+
+def main() -> None:
+    import logging
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+    parser = argparse.ArgumentParser(description="Resample one episode with ISR")
+    parser.add_argument("--data", required=True, help="Path to episode data.json")
+    parser.add_argument("--output_json", default=None, help="Optional output data.json with resampled frames")
+    parser.add_argument("--d_target", type=float, default=0.05, help="Target spacing between sampled frames")
+    parser.add_argument("--lambda_dist", type=float, default=1.0, help="Distance cost weight")
+    parser.add_argument("--lambda_acc", type=float, default=0.01, help="Acceleration cost weight")
+    args = parser.parse_args()
+
+    data_path = Path(args.data)
+    if not data_path.exists():
+        raise FileNotFoundError(f"File not found: {data_path}")
+    if data_path.stat().st_size == 0:
+        raise ValueError(f"File is empty: {data_path}")
+
+    with data_path.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    from isr import isr_resample_trajectory
+
+
+    positions, timestamps, gripper, frame_indices = load_episode_arrays(data)
+    if len(positions) < 2:
+        raise ValueError(f"Expected at least two frames in {data_path}")
+
+    print("=" * 60)
+    print(f"ISR resampling: {data_path}")
+
+    resampled_indices = isr_resample_trajectory(
+        positions=positions,
+        d_target=args.d_target,
+        lambda_dist=args.lambda_dist,
+        lambda_acc=args.lambda_acc,
+        times=timestamps,
+        gripper=gripper,
+    )
+    selected_frame_indices = [frame_indices[idx] for idx in resampled_indices]
+
+    print("=" * 60)
+    print(f"Total frames in file: {len(data.get('data', []))}")
+    print(f"ISR resampled frame count: {len(resampled_indices)}")
+    print(f"Compression: {len(resampled_indices) / len(positions) * 100:.2f}%")
+
+    if args.output_json:
+        output_path = Path(args.output_json)
+        save_selected_json(data, selected_frame_indices, output_path)
+        print(f"Saved selected data: {output_path}")
+
+
+if __name__ == "__main__":
+    main()
